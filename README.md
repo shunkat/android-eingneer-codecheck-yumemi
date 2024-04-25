@@ -76,3 +76,47 @@ Android Studioで最初に開いた時に、人によってはktlintのプラグ
 新規機能追加→feature
 バグ対応→fix
 リファクタ→refactor
+
+
+## アーキテクチャについて
+[公式developerガイド](https://developer.android.com/topic/architecture?hl=ja)を参考にui層とdata層に分ける形で行きます。
+かなりシンプルなアプリなのでdomain層は冗長だと判断しています。
+
+#### ui層
+- ui element(見た目) => fragment
+- state holders(ユーザーからの入力や表示するデータ) => view model
+
+#### data層
+- entity(データ型) => model
+- data source(大元のデータ) => github(api経由) 
+- repository(データへのアクセスをするインターフェース部分) => repository
+
+### フォルダ構成
+```
+root
+  |- data
+  |  |- model
+  |  \- repository
+  \- ui
+     |- search(レポジトリ検索画面)
+     |  |- fragment
+     |  \- viewModel
+     |
+     \- detail(レポジトリ詳細画面)
+        |- fragment
+        \- viewModel
+```
+
+`こんな構造の理由`
+
+今回のアプリはレポジトリ検索（search）画面とレポジトリ詳細（detail）画面の2ページ構成です。
+また、detail画面では、前のページから受け渡されたデータを表示しているだけなのでdetail画面はui層しか必要ありません。
+なのでdata層はページごとに分けず、ui層だけページごとに分けています。
+
+[参考にしてるレポジトリ](https://github.com/erikjhordan-rey/People-MVVM)
+
+### コーディング規約
+新規の部分は以下を参考にしてください。
+https://kotlinlang.org/docs/coding-conventions.html#avoid-redundant-constructs
+
+既存に似たようなコードが存在する場合はそちらを尊重してください。

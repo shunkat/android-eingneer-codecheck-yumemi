@@ -1,7 +1,7 @@
 /*
  * Copyright © 2021 YUMEMI Inc. All rights reserved.
  */
-package jp.co.yumemi.android.code_check
+package jp.co.yumemi.android.code_check.ui.search
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.databinding.FragmentOneBinding
 
 class OneFragment : Fragment(R.layout.fragment_one) {
@@ -63,8 +64,7 @@ class OneFragment : Fragment(R.layout.fragment_one) {
 
     fun gotoRepositoryFragment(item: item) {
         val _action =
-            OneFragmentDirections
-                .actionRepositoriesFragmentToRepositoryFragment(item = item)
+            OneFragmentDirections.actionRepositoriesFragmentToRepositoryFragment(item = item)
         findNavController().navigate(_action)
     }
 }
