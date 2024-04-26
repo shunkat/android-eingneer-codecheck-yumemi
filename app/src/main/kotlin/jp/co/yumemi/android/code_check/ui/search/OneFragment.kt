@@ -33,14 +33,14 @@ class OneFragment : Fragment(R.layout.fragment_one) {
 
         _binding.searchInputText.setOnEditorActionListener { editText, action, _ ->
             if (action == EditorInfo.IME_ACTION_SEARCH) {
-                editText.text.toString().let {
-                    _viewModel.searchResults(it).observe(viewLifecycleOwner) {
-                        _adapter.submitList(it)
-                    }
-                }
+                _viewModel.searchResults(editText.text.toString())
                 return@setOnEditorActionListener true
             }
             false
+        }
+
+        _viewModel.searchResult.observe(viewLifecycleOwner) {
+            _adapter.submitList(it)
         }
 
         _binding.recyclerView.apply {

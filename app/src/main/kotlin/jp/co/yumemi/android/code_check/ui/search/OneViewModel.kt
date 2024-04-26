@@ -17,12 +17,13 @@ import java.util.Date
  * TwoFragment で使う
  */
 class OneViewModel(private val repository: GithubRepository) : ViewModel() {
-    fun searchResults(inputText: String): LiveData<List<item>> {
-        val result = MutableLiveData<List<item>>()
+    private val _searchResult = MutableLiveData<List<item>>()
+    val searchResult: LiveData<List<item>> get() = _searchResult
+
+    fun searchResults(inputText: String) {
         viewModelScope.launch {
-            result.value = repository.searchRepositories(inputText)
             lastSearchDate = Date() // 検索日時を更新
+            _searchResult.value = repository.searchRepositories(inputText)
         }
-        return result
     }
 }
