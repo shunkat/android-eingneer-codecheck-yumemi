@@ -7,19 +7,22 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import dagger.hilt.android.AndroidEntryPoint
 import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.data.model.item
-import jp.co.yumemi.android.code_check.data.repository.GithubRepository
 import jp.co.yumemi.android.code_check.databinding.FragmentOneBinding
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class OneFragment : Fragment(R.layout.fragment_one) {
+    @Inject lateinit var _viewModel: OneViewModel
+
     override fun onViewCreated(
         view: View,
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
         val _binding = FragmentOneBinding.bind(view)
-        val _viewModel = OneViewModel(GithubRepository(requireContext()))
         val _layoutManager = LinearLayoutManager(requireContext())
         val _dividerItemDecoration = DividerItemDecoration(requireContext(), _layoutManager.orientation)
         val _adapter =
@@ -33,14 +36,14 @@ class OneFragment : Fragment(R.layout.fragment_one) {
 
         _binding.searchInputText.setOnEditorActionListener { editText, action, _ ->
             if (action == EditorInfo.IME_ACTION_SEARCH) {
-                editText.text.toString().let {
-                    _viewModel.searchResults(it).observe(viewLifecycleOwner) {
-                        _adapter.submitList(it)
-                    }
-                }
+                _viewModel.searchResults(editText.text.toString())
                 return@setOnEditorActionListener true
             }
             false
+        }
+
+        _viewModel.searchResult.observe(viewLifecycleOwner) {
+            _adapter.submitList(it)
         }
 
         _binding.recyclerView.apply {
