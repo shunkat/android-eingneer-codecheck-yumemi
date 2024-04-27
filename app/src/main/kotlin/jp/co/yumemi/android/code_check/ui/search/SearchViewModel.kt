@@ -18,9 +18,16 @@ class SearchViewModel
         private val _searchResult = MutableLiveData<List<RepositoryInfo>>()
         val searchResult: LiveData<List<RepositoryInfo>> get() = _searchResult
 
+        private val _errorMessage = MutableLiveData<String>()
+        val errorMessage: LiveData<String> get() = _errorMessage
+
         fun searchResults(inputText: String) {
             viewModelScope.launch {
-                _searchResult.value = repository.searchRepositories(inputText)
+                try {
+                    _searchResult.value = repository.searchRepositories(inputText)
+                } catch (e: Exception) {
+                    _errorMessage.postValue("エラーが発生しました: ${e.message}")
+                }
             }
         }
     }

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -76,7 +77,15 @@ class SearchFragment : Fragment() {
     private fun setupObservers() {
         // 検索結果が帰ってきたらリスト更新
         viewModel.searchResult.observe(viewLifecycleOwner) {
+            if (it.size == 0) {
+                Toast.makeText(requireContext(), "検索結果が0件でした。", Toast.LENGTH_LONG).show()
+            }
             adapter.submitList(it)
+        }
+
+        // エラーだったらエラーダイアログを表示
+        viewModel.errorMessage.observe(viewLifecycleOwner) {
+            Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
         }
     }
 
