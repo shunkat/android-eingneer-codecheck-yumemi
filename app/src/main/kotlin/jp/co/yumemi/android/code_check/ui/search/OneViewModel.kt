@@ -35,7 +35,10 @@ class OneViewModel
         fun searchResults(inputText: String) {
             viewModelScope.launch {
                 _searchResult.value = repository.searchRepositories(inputText)
-                TimeManager.updateSearchDate()
             }
+        }
+
+        fun updateSearchDate() {
+            TimeManager.updateSearchDate()
         }
     }

@@ -37,6 +37,7 @@ class OneFragment : Fragment(R.layout.fragment_one) {
         _binding.searchInputText.setOnEditorActionListener { editText, action, _ ->
             if (action == EditorInfo.IME_ACTION_SEARCH) {
                 _viewModel.searchResults(editText.text.toString())
+                _viewModel.updateSearchDate()
                 return@setOnEditorActionListener true
             }
             false
