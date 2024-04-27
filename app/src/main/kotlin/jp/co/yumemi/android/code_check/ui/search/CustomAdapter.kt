@@ -10,24 +10,23 @@ import androidx.recyclerview.widget.RecyclerView
 import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.data.model.item
 
-val diff_util =
-    object : DiffUtil.ItemCallback<item>() {
-        override fun areItemsTheSame(
-            oldItem: item,
-            newItem: item,
-        ): Boolean {
-            return oldItem.name == newItem.name
-        }
-
-        override fun areContentsTheSame(
-            oldItem: item,
-            newItem: item,
-        ): Boolean {
-            return oldItem == newItem
-        }
+class TaskDiffCallback : DiffUtil.ItemCallback<item>() {
+    override fun areItemsTheSame(
+        oldItem: item,
+        newItem: item,
+    ): Boolean {
+        return oldItem.name == newItem.name
     }
 
-class CustomAdapter(private val itemClickListener: OnItemClickListener) : ListAdapter<item, CustomAdapter.ViewHolder>(diff_util) {
+    override fun areContentsTheSame(
+        oldItem: item,
+        newItem: item,
+    ): Boolean {
+        return oldItem == newItem
+    }
+}
+
+class CustomAdapter(private val itemClickListener: OnItemClickListener) : ListAdapter<item, CustomAdapter.ViewHolder>(TaskDiffCallback()) {
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
     interface OnItemClickListener {
