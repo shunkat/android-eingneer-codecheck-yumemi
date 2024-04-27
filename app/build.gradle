@@ -12,7 +12,7 @@ android {
     compileSdk 31
 
     defaultConfig {
-        applicationId "jp.co.yumemi.android.codecheck"
+        applicationId "jp.co.yumemi.android.code_check"
         minSdk 23
         targetSdk 31
         versionCode 1
