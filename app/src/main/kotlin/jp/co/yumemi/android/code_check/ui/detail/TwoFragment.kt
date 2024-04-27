@@ -1,11 +1,10 @@
-/*
- * Copyright © 2021 YUMEMI Inc. All rights reserved.
- */
 package jp.co.yumemi.android.code_check.ui.detail
 
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import coil.load
@@ -15,9 +14,33 @@ import jp.co.yumemi.android.code_check.ui.search.TimeManager.Companion.lastSearc
 
 class TwoFragment : Fragment(R.layout.fragment_two) {
     private val args: TwoFragmentArgs by navArgs()
+    private var _binding: FragmentTwoBinding? = null
+    private val binding get() =
+        _binding ?: throw IllegalStateException(
+            "Binding is accessed before onCreateView or after onDestroyView",
+        )
 
-    private var binding: FragmentTwoBinding? = null
-    private val _binding get() = binding!!
+    // リソース文字列のロード
+    private lateinit var starsLabel: String
+    private lateinit var watchersLabel: String
+    private lateinit var forksLabel: String
+    private lateinit var issuesLabel: String
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View? {
+        _binding = FragmentTwoBinding.inflate(inflater, container, false)
+
+        // リソースの初期化
+        starsLabel = getString(R.string.stars_count)
+        watchersLabel = getString(R.string.watchers_count)
+        forksLabel = getString(R.string.forks_count)
+        issuesLabel = getString(R.string.open_issues_count)
+
+        return binding.root
+    }
 
     override fun onViewCreated(
         view: View,
@@ -25,18 +48,25 @@ class TwoFragment : Fragment(R.layout.fragment_two) {
     ) {
         super.onViewCreated(view, savedInstanceState)
 
-        Log.d("検索した日時", lastSearchDate.toString())
+        // :todo そもそも必要かどうか検討
+        // :todo 必要ならデバッグビルドの時だけ呼び出すような形に変更
+        Log.d("Last Search Date", lastSearchDate.toString())
 
-        binding = FragmentTwoBinding.bind(view)
+        val item = args.item
 
-        var item = args.item
+        with(binding) {
+            ownerIconView.load(item.ownerIconUrl)
+            nameView.text = item.name
+            languageView.text = item.language
+            starsView.text = String.format(starsLabel, item.stargazersCount)
+            watchersView.text = String.format(watchersLabel, item.watchersCount)
+            forksView.text = String.format(forksLabel, item.forksCount)
+            openIssuesView.text = String.format(issuesLabel, item.openIssuesCount)
+        }
+    }
 
-        _binding.ownerIconView.load(item.ownerIconUrl)
-        _binding.nameView.text = item.name
-        _binding.languageView.text = item.language
-        _binding.starsView.text = "${item.stargazersCount} stars"
-        _binding.watchersView.text = "${item.watchersCount} watchers"
-        _binding.forksView.text = "${item.forksCount} forks"
-        _binding.openIssuesView.text = "${item.openIssuesCount} open issues"
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
