@@ -8,47 +8,47 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import jp.co.yumemi.android.code_check.R
-import jp.co.yumemi.android.code_check.data.model.item
+import jp.co.yumemi.android.code_check.data.model.Item
 
-class TaskDiffCallback : DiffUtil.ItemCallback<item>() {
+class TaskDiffCallback : DiffUtil.ItemCallback<Item>() {
     override fun areItemsTheSame(
-        oldItem: item,
-        newItem: item,
+        oldItem: Item,
+        newItem: Item,
     ): Boolean {
         return oldItem.name == newItem.name
     }
 
     override fun areContentsTheSame(
-        oldItem: item,
-        newItem: item,
+        oldItem: Item,
+        newItem: Item,
     ): Boolean {
         return oldItem == newItem
     }
 }
 
-class CustomAdapter(private val itemClickListener: OnItemClickListener) : ListAdapter<item, CustomAdapter.ViewHolder>(TaskDiffCallback()) {
+class CustomAdapter(private val itemClickListener: OnItemClickListener) : ListAdapter<Item, CustomAdapter.ViewHolder>(TaskDiffCallback()) {
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
     interface OnItemClickListener {
-        fun itemClick(item: item)
+        fun itemClick(item: Item)
     }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
     ): ViewHolder {
-        val _view = LayoutInflater.from(parent.context).inflate(R.layout.layout_item, parent, false)
-        return ViewHolder(_view)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.layout_item, parent, false)
+        return ViewHolder(view)
     }
 
     override fun onBindViewHolder(
         holder: ViewHolder,
         position: Int,
     ) {
-        val _item = getItem(position)
-        (holder.itemView.findViewById<TextView>(R.id.repositoryNameView)).text = _item.name
+        val item = getItem(position)
+        (holder.itemView.findViewById<TextView>(R.id.repositoryNameView)).text = item.name
         holder.itemView.setOnClickListener {
-            itemClickListener.itemClick(_item)
+            itemClickListener.itemClick(item)
         }
     }
 }

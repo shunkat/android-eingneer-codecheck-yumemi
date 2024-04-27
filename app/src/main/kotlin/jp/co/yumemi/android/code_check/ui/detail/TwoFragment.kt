@@ -14,9 +14,9 @@ import jp.co.yumemi.android.code_check.ui.search.TimeManager.Companion.lastSearc
 
 class TwoFragment : Fragment(R.layout.fragment_two) {
     private val args: TwoFragmentArgs by navArgs()
-    private var _binding: FragmentTwoBinding? = null
-    private val binding get() =
-        _binding ?: throw IllegalStateException(
+    private var binding: FragmentTwoBinding? = null
+    private val safeBinding get() =
+        binding ?: throw IllegalStateException(
             "Binding is accessed before onCreateView or after onDestroyView",
         )
 
@@ -31,7 +31,7 @@ class TwoFragment : Fragment(R.layout.fragment_two) {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        _binding = FragmentTwoBinding.inflate(inflater, container, false)
+        binding = FragmentTwoBinding.inflate(inflater, container, false)
 
         // リソースの初期化
         starsLabel = getString(R.string.stars_count)
@@ -39,7 +39,7 @@ class TwoFragment : Fragment(R.layout.fragment_two) {
         forksLabel = getString(R.string.forks_count)
         issuesLabel = getString(R.string.open_issues_count)
 
-        return binding.root
+        return safeBinding.root
     }
 
     override fun onViewCreated(
@@ -48,13 +48,13 @@ class TwoFragment : Fragment(R.layout.fragment_two) {
     ) {
         super.onViewCreated(view, savedInstanceState)
 
-        // :todo そもそも必要かどうか検討
-        // :todo 必要ならデバッグビルドの時だけ呼び出すような形に変更
+        // TODO: そもそも必要かどうか検討
+        // TODO: 必要ならデバッグビルドの時だけ呼び出すような形に変更
         Log.d("Last Search Date", lastSearchDate.toString())
 
         val item = args.item
 
-        with(binding) {
+        with(safeBinding) {
             ownerIconView.load(item.ownerIconUrl)
             nameView.text = item.name
             languageView.text = item.language
@@ -67,6 +67,6 @@ class TwoFragment : Fragment(R.layout.fragment_two) {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        binding = null
     }
 }

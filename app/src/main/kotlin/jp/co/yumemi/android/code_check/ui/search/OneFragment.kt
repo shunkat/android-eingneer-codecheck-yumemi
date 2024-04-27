@@ -10,27 +10,27 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
-import jp.co.yumemi.android.code_check.data.model.item
+import jp.co.yumemi.android.code_check.data.model.Item
 import jp.co.yumemi.android.code_check.databinding.FragmentOneBinding
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class OneFragment : Fragment() {
-    @Inject lateinit var _viewModel: OneViewModel
-    private var _binding: FragmentOneBinding? = null
-    private val binding get() = _binding!!
+    @Inject lateinit var viewModel: OneViewModel
+    private var binding: FragmentOneBinding? = null
+    private val safeBinding get() = binding!!
 
-    private lateinit var _layoutManager: LinearLayoutManager
-    private lateinit var _dividerItemDecoration: DividerItemDecoration
-    private lateinit var _adapter: CustomAdapter
+    private lateinit var layoutManager: LinearLayoutManager
+    private lateinit var dividerItemDecoration: DividerItemDecoration
+    private lateinit var adapter: CustomAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        _binding = FragmentOneBinding.inflate(inflater, container, false)
-        return binding.root
+        binding = FragmentOneBinding.inflate(inflater, container, false)
+        return safeBinding.root
     }
 
     override fun onViewCreated(
@@ -43,27 +43,27 @@ class OneFragment : Fragment() {
     }
 
     private fun initViews() {
-        _layoutManager = LinearLayoutManager(requireContext())
-        _dividerItemDecoration = DividerItemDecoration(requireContext(), _layoutManager.orientation)
-        _adapter =
+        layoutManager = LinearLayoutManager(requireContext())
+        dividerItemDecoration = DividerItemDecoration(requireContext(), layoutManager.orientation)
+        adapter =
             CustomAdapter(
                 object : CustomAdapter.OnItemClickListener {
-                    override fun itemClick(item: item) {
+                    override fun itemClick(item: Item) {
                         gotoRepositoryFragment(item)
                     }
                 },
             )
 
-        binding.recyclerView.apply {
-            layoutManager = this@OneFragment._layoutManager
-            addItemDecoration(_dividerItemDecoration)
-            adapter = this@OneFragment._adapter
+        safeBinding.recyclerView.apply {
+            layoutManager = this@OneFragment.layoutManager
+            addItemDecoration(dividerItemDecoration)
+            adapter = this@OneFragment.adapter
         }
 
-        binding.searchInputText.setOnEditorActionListener { editText, action, _ ->
+        safeBinding.searchInputText.setOnEditorActionListener { editText, action, _ ->
             if (action == EditorInfo.IME_ACTION_SEARCH) {
-                _viewModel.searchResults(editText.text.toString())
-                _viewModel.updateSearchDate()
+                viewModel.searchResults(editText.text.toString())
+                viewModel.updateSearchDate()
                 return@setOnEditorActionListener true
             }
             false
@@ -71,18 +71,18 @@ class OneFragment : Fragment() {
     }
 
     private fun setupObservers() {
-        _viewModel.searchResult.observe(viewLifecycleOwner) {
-            _adapter.submitList(it)
+        viewModel.searchResult.observe(viewLifecycleOwner) {
+            adapter.submitList(it)
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        binding = null
     }
 
-    private fun gotoRepositoryFragment(item: item) {
-        val _action = OneFragmentDirections.actionRepositoriesFragmentToRepositoryFragment(item = item)
-        findNavController().navigate(_action)
+    private fun gotoRepositoryFragment(item: Item) {
+        val action = OneFragmentDirections.actionRepositoriesFragmentToRepositoryFragment(item = item)
+        findNavController().navigate(action)
     }
 }

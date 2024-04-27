@@ -9,6 +9,7 @@ import java.util.Date
 
 @AndroidEntryPoint
 class TopActivity : AppCompatActivity(R.layout.activity_top) {
+    // TODO: おそらく不要なので検証する
     companion object {
         lateinit var lastSearchDate: Date
     }

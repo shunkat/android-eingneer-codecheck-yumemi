@@ -9,13 +9,13 @@ import io.ktor.client.request.header
 import io.ktor.client.request.parameter
 import io.ktor.client.statement.HttpResponse
 import jp.co.yumemi.android.code_check.R
-import jp.co.yumemi.android.code_check.data.model.item
+import jp.co.yumemi.android.code_check.data.model.Item
 import org.json.JSONObject
 
 class GithubRepository(private val context: Context) {
     private val client = HttpClient(Android)
 
-    suspend fun searchRepositories(query: String): List<item> {
+    suspend fun searchRepositories(query: String): List<Item> {
         val response: HttpResponse =
             client.get("https://api.github.com/search/repositories") {
                 header("Accept", "application/vnd.github.v3+json")
@@ -24,7 +24,7 @@ class GithubRepository(private val context: Context) {
 
         val jsonBody = JSONObject(response.receive<String>())
         val jsonItems = jsonBody.optJSONArray("items")!!
-        val items = mutableListOf<item>()
+        val items = mutableListOf<Item>()
 
         for (i in 0 until jsonItems.length()) {
             val jsonItem = jsonItems.getJSONObject(i)
@@ -37,7 +37,7 @@ class GithubRepository(private val context: Context) {
             val openIssuesCount = jsonItem.optLong("open_issues_count")
 
             items.add(
-                item(
+                Item(
                     name = name,
                     ownerIconUrl = ownerIconUrl,
                     language = context.getString(R.string.written_language, language),
