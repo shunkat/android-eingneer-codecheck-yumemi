@@ -1,7 +1,6 @@
 package jp.co.yumemi.android.code_check.ui.detail
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,6 @@ import androidx.navigation.fragment.navArgs
 import coil.load
 import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.databinding.FragmentDetailBinding
-import jp.co.yumemi.android.code_check.ui.search.TimeManager.Companion.lastSearchDate
 
 class DetailFragment : Fragment(R.layout.fragment_detail) {
     private val args: DetailFragmentArgs by navArgs()
@@ -21,10 +19,10 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
         )
 
     // リソース文字列のロード
-    private lateinit var countUnitStars: String
-    private lateinit var countUnitWatchers: String
-    private lateinit var countUnitForks: String
-    private lateinit var countUnitOpenIssues: String
+    private val countUnitStars by lazy { getString(R.string.count_unit_stars) }
+    private val countUnitWatchers by lazy { getString(R.string.count_unit_watchers) }
+    private val countUnitForks by lazy { getString(R.string.count_unit_forks) }
+    private val countUnitOpenIssues by lazy { getString(R.string.count_unit_open_issues) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,13 +30,6 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
         savedInstanceState: Bundle?,
     ): View? {
         binding = FragmentDetailBinding.inflate(inflater, container, false)
-
-        // リソースの初期化
-        countUnitStars = getString(R.string.count_unit_stars)
-        countUnitWatchers = getString(R.string.count_unit_watchers)
-        countUnitForks = getString(R.string.count_unit_forks)
-        countUnitOpenIssues = getString(R.string.count_unit_open_issues)
-
         return safeBinding.root
     }
 
@@ -47,10 +38,6 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
-
-        // TODO: そもそも必要かどうか検討
-        // TODO: 必要ならデバッグビルドの時だけ呼び出すような形に変更
-        Log.d("Last Search Date", lastSearchDate.toString())
 
         val repositoryInfo = args.repositoryInfo
 
