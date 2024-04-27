@@ -10,18 +10,7 @@ import androidx.lifecycle.viewModelScope
 import jp.co.yumemi.android.code_check.data.model.RepositoryInfo
 import jp.co.yumemi.android.code_check.data.repository.GithubRepository
 import kotlinx.coroutines.launch
-import java.util.Date
 import javax.inject.Inject
-
-class TimeManager {
-    companion object {
-        var lastSearchDate: Date? = null
-
-        fun updateSearchDate() {
-            lastSearchDate = Date()
-        }
-    }
-}
 
 class SearchViewModel
     @Inject
@@ -29,13 +18,16 @@ class SearchViewModel
         private val _searchResult = MutableLiveData<List<RepositoryInfo>>()
         val searchResult: LiveData<List<RepositoryInfo>> get() = _searchResult
 
+        private val _errorMessage = MutableLiveData<String>()
+        val errorMessage: LiveData<String> get() = _errorMessage
+
         fun searchResults(inputText: String) {
             viewModelScope.launch {
-                _searchResult.value = repository.searchRepositories(inputText)
+                try {
+                    _searchResult.value = repository.searchRepositories(inputText)
+                } catch (e: Exception) {
+                    _errorMessage.postValue("エラーが発生しました: ${e.message}")
+                }
             }
-        }
-
-        fun updateSearchDate() {
-            TimeManager.updateSearchDate()
         }
     }

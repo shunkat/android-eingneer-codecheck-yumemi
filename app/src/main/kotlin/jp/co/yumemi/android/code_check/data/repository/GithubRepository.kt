@@ -22,21 +22,21 @@ class GithubRepository(private val context: Context) {
                 parameter("q", query)
             }
 
-        val jsonBody = JSONObject(response.receive<String>())
-        val jsonItems = jsonBody.optJSONArray("items")!!
-        val repositoryInfos = mutableListOf<RepositoryInfo>()
+        val json = JSONObject(response.receive<String>())
+        val items =
+            json.optJSONArray("items")
+                ?: return emptyList() // リストが空の場合は空のリストを返す。
 
-        for (i in 0 until jsonItems.length()) {
-            val jsonItem = jsonItems.getJSONObject(i)
-            val repositoryAndOwnerName = jsonItem.optString("full_name")
-            val ownerAvatarUrl = jsonItem.getJSONObject("owner").optString("avatar_url")
-            val language = jsonItem.optString("language")
-            val stargazersCount = jsonItem.optLong("stargazers_count")
-            val watchersCount = jsonItem.optLong("watchers_count")
-            val forksCount = jsonItem.optLong("forks_count")
-            val openIssuesCount = jsonItem.optLong("open_issues_count")
+        return List(items.length()) { i ->
+            items.optJSONObject(i)?.let { jsonItem ->
+                val repositoryAndOwnerName = jsonItem.optString("full_name")
+                val ownerAvatarUrl = jsonItem.getJSONObject("owner").optString("avatar_url")
+                val language = jsonItem.optString("language")
+                val stargazersCount = jsonItem.optLong("stargazers_count")
+                val watchersCount = jsonItem.optLong("watchers_count")
+                val forksCount = jsonItem.optLong("forks_count")
+                val openIssuesCount = jsonItem.optLong("open_issues_count")
 
-            repositoryInfos.add(
                 RepositoryInfo(
                     repositoryAndOwnerName = repositoryAndOwnerName,
                     ownerAvatarUrl = ownerAvatarUrl,
@@ -45,9 +45,8 @@ class GithubRepository(private val context: Context) {
                     watchersCount = watchersCount,
                     forksCount = forksCount,
                     openIssuesCount = openIssuesCount,
-                ),
-            )
-        }
-        return repositoryInfos
+                )
+            }
+        }.filterNotNull() // null itemsを除外
     }
 }

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -38,12 +39,14 @@ class SearchFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
-        initViews()
-        setupObservers()
+        binding?.let {
+            initViews(it)
+            setupObservers()
+        }
     }
 
     // viewの初期化
-    private fun initViews() {
+    private fun initViews(binding: FragmentSearchBinding) {
         layoutManager = LinearLayoutManager(requireContext())
         dividerItemDecoration = DividerItemDecoration(requireContext(), layoutManager.orientation)
         adapter =
@@ -55,16 +58,16 @@ class SearchFragment : Fragment() {
                 },
             )
 
-        safeBinding.rvRepositoryList.apply {
+        binding.rvRepositoryList.apply {
             layoutManager = this@SearchFragment.layoutManager
             addItemDecoration(dividerItemDecoration)
             adapter = this@SearchFragment.adapter
         }
 
-        safeBinding.searchInputText.setOnEditorActionListener { editText, action, _ ->
-            if (action == EditorInfo.IME_ACTION_SEARCH) {
+        binding.searchInputText.setOnEditorActionListener { editText, action, _ ->
+            // 検索アクションかつテキストが何か入力されている時だけ、検索処理を呼び出す
+            if (action == EditorInfo.IME_ACTION_SEARCH && editText.text.isNotEmpty()) {
                 viewModel.searchResults(editText.text.toString())
-                viewModel.updateSearchDate()
                 return@setOnEditorActionListener true
             }
             false
@@ -74,7 +77,15 @@ class SearchFragment : Fragment() {
     private fun setupObservers() {
         // 検索結果が帰ってきたらリスト更新
         viewModel.searchResult.observe(viewLifecycleOwner) {
+            if (it.size == 0) {
+                Toast.makeText(requireContext(), "検索結果が0件でした。", Toast.LENGTH_LONG).show()
+            }
             adapter.submitList(it)
+        }
+
+        // エラーだったらエラーダイアログを表示
+        viewModel.errorMessage.observe(viewLifecycleOwner) {
+            Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
         }
     }
 
