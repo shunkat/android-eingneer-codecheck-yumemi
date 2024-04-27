@@ -38,12 +38,14 @@ class SearchFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
-        initViews()
-        setupObservers()
+        binding?.let {
+            initViews(it)
+            setupObservers()
+        }
     }
 
     // viewの初期化
-    private fun initViews() {
+    private fun initViews(binding: FragmentSearchBinding) {
         layoutManager = LinearLayoutManager(requireContext())
         dividerItemDecoration = DividerItemDecoration(requireContext(), layoutManager.orientation)
         adapter =
@@ -55,14 +57,15 @@ class SearchFragment : Fragment() {
                 },
             )
 
-        safeBinding.rvRepositoryList.apply {
+        binding.rvRepositoryList.apply {
             layoutManager = this@SearchFragment.layoutManager
             addItemDecoration(dividerItemDecoration)
             adapter = this@SearchFragment.adapter
         }
 
-        safeBinding.searchInputText.setOnEditorActionListener { editText, action, _ ->
-            if (action == EditorInfo.IME_ACTION_SEARCH) {
+        binding.searchInputText.setOnEditorActionListener { editText, action, _ ->
+            // 検索アクションかつテキストが何か入力されている時だけ、検索処理を呼び出す
+            if (action == EditorInfo.IME_ACTION_SEARCH && editText.text.isNotEmpty()) {
                 viewModel.searchResults(editText.text.toString())
                 return@setOnEditorActionListener true
             }
