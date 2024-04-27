@@ -64,7 +64,6 @@ class SearchFragment : Fragment() {
         safeBinding.searchInputText.setOnEditorActionListener { editText, action, _ ->
             if (action == EditorInfo.IME_ACTION_SEARCH) {
                 viewModel.searchResults(editText.text.toString())
-                viewModel.updateSearchDate()
                 return@setOnEditorActionListener true
             }
             false
