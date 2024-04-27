@@ -42,6 +42,7 @@ class SearchFragment : Fragment() {
         setupObservers()
     }
 
+    // viewの初期化
     private fun initViews() {
         layoutManager = LinearLayoutManager(requireContext())
         dividerItemDecoration = DividerItemDecoration(requireContext(), layoutManager.orientation)
@@ -71,6 +72,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun setupObservers() {
+        // 検索結果が帰ってきたらリスト更新
         viewModel.searchResult.observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }

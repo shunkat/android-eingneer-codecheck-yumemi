@@ -13,9 +13,6 @@ import kotlinx.coroutines.launch
 import java.util.Date
 import javax.inject.Inject
 
-/**
- * TwoFragment で使う
- */
 class TimeManager {
     companion object {
         var lastSearchDate: Date? = null

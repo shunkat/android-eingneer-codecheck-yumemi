@@ -1,12 +1,10 @@
 <resources>
-    // common
     <string name="app_name">Android Engineer CodeCheck</string>
 
-    // search repository page
+    // レポジトリ検索ページ
     <string name="hint_search_repository">GitHubのリポジトリを検索できるよー</string>
 
-
-    // detail repository page
+    // レポジトリ詳細ページ
     <string name="count_unit_stars">stars</string>
     <string name="count_unit_watchers">watchers</string>
     <string name="count_unit_forks">forks</string>

@@ -54,6 +54,7 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
 
         val repositoryInfo = args.repositoryInfo
 
+        // repositoryの情報をviewに反映
         with(safeBinding) {
             ivOwnerIcon.load(repositoryInfo.ownerAvatarUrl)
             tvRepositoryAndOwnerName.text = repositoryInfo.repositoryAndOwnerName
