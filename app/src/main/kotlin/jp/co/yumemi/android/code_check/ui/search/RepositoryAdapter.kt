@@ -29,7 +29,10 @@ class TaskDiffCallback : DiffUtil.ItemCallback<RepositoryInfo>() {
 class RepositoryAdapter(private val itemClickListener: OnItemClickListener) : ListAdapter<RepositoryInfo, RepositoryAdapter.ViewHolder>(
     TaskDiffCallback(),
 ) {
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
+    // viewHolderにTextViewをキャッシュしておくことで毎回findViewByIdを呼ばないようにする
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val repositoryNameTextView: TextView = view.findViewById(R.id.tvRepositoryName)
+    }
 
     interface OnItemClickListener {
         fun onRepositoryClick(repositoryInfo: RepositoryInfo)
@@ -48,7 +51,7 @@ class RepositoryAdapter(private val itemClickListener: OnItemClickListener) : Li
         position: Int,
     ) {
         val repository = getItem(position)
-        (holder.itemView.findViewById<TextView>(R.id.tvRepositoryName)).text = repository.repositoryAndOwnerName
+        holder.repositoryNameTextView.text = repository.repositoryAndOwnerName
         holder.itemView.setOnClickListener {
             itemClickListener.onRepositoryClick(repository)
         }
