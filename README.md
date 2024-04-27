@@ -28,7 +28,7 @@ Android Studioで最初に開いた時に、人によってはktlintのプラグ
 3. 特定の結果を選択したら、該当リポジトリの詳細（リポジトリ名、オーナーアイコン、プロジェクト言語、Star 数、Watcher 数、Fork 数、Issue
    数）を表示
 
-## 実装スケジュール
+## 実装スケジュール(と進捗)
 
 1日目
 
@@ -36,6 +36,7 @@ Android Studioで最初に開いた時に、人によってはktlintのプラグ
 - git周りやエディター周りの初期設定
 - アーキテクチャ修正
 ```
+→予定通り
 
 2日目
 
@@ -44,12 +45,14 @@ Android Studioで最初に開いた時に、人によってはktlintのプラグ
 - 適切なまとまりにコード分割
 - クラス名 / 変数名の修正
 ```
+→クラス名 / 変数名の修正が終わらず
 
 3日目
 
 ```
 - バグ修正
 ```
+→
 
 4日目
 
@@ -58,9 +61,10 @@ Android Studioで最初に開いた時に、人によってはktlintのプラグ
 - CI整備
 - 機能追加
 ```
+→
 
 イメージとしては
-粒度の大きい順にリファクタ→細かいバグ修正
+粒度の大きい順にリファクタ→細かいバグ修正→
 
 バグ修正から始めようとしたが、少し見たらコードが酷すぎるので、リファクタのほうが優先度が高いと判断した。
 
@@ -76,7 +80,6 @@ Android Studioで最初に開いた時に、人によってはktlintのプラグ
 新規機能追加→feature
 バグ対応→fix
 リファクタ→refactor
-
 
 ## アーキテクチャについて
 [公式developerガイド](https://developer.android.com/topic/architecture?hl=ja)を参考にui層とdata層に分ける形で行きます。
@@ -120,3 +123,15 @@ root
 https://kotlinlang.org/docs/coding-conventions.html#avoid-redundant-constructs
 
 既存に似たようなコードが存在する場合はそちらを尊重してください。
+
+`xmlのレイアウトファイルのid`について
+
+idのプレフィックスとして、そのviewの種類をつけるようにします。以前経験したプロダクトで便利だったので。
+
+例：
+
+```
+textView →　tv
+imageView → iv
+recyclerView → rv
+```
