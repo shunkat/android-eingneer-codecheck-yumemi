@@ -7,7 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import jp.co.yumemi.android.code_check.data.model.Item
+import jp.co.yumemi.android.code_check.data.model.RepositoryInfo
 import jp.co.yumemi.android.code_check.data.repository.GithubRepository
 import kotlinx.coroutines.launch
 import java.util.Date
@@ -26,11 +26,11 @@ class TimeManager {
     }
 }
 
-class OneViewModel
+class SearchViewModel
     @Inject
     constructor(private val repository: GithubRepository) : ViewModel() {
-        private val _searchResult = MutableLiveData<List<Item>>() // Itemに修正
-        val searchResult: LiveData<List<Item>> get() = _searchResult
+        private val _searchResult = MutableLiveData<List<RepositoryInfo>>()
+        val searchResult: LiveData<List<RepositoryInfo>> get() = _searchResult
 
         fun searchResults(inputText: String) {
             viewModelScope.launch {

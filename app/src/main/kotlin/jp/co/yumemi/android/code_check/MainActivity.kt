@@ -8,7 +8,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.util.Date
 
 @AndroidEntryPoint
-class TopActivity : AppCompatActivity(R.layout.activity_top) {
+class MainActivity : AppCompatActivity(R.layout.activity_main) {
     // TODO: おそらく不要なので検証する
     companion object {
         lateinit var lastSearchDate: Date

@@ -10,26 +10,26 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
-import jp.co.yumemi.android.code_check.data.model.Item
-import jp.co.yumemi.android.code_check.databinding.FragmentOneBinding
+import jp.co.yumemi.android.code_check.data.model.RepositoryInfo
+import jp.co.yumemi.android.code_check.databinding.FragmentSearchBinding
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class OneFragment : Fragment() {
-    @Inject lateinit var viewModel: OneViewModel
-    private var binding: FragmentOneBinding? = null
+class SearchFragment : Fragment() {
+    @Inject lateinit var viewModel: SearchViewModel
+    private var binding: FragmentSearchBinding? = null
     private val safeBinding get() = binding!!
 
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var dividerItemDecoration: DividerItemDecoration
-    private lateinit var adapter: CustomAdapter
+    private lateinit var adapter: RepositoryAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        binding = FragmentOneBinding.inflate(inflater, container, false)
+        binding = FragmentSearchBinding.inflate(inflater, container, false)
         return safeBinding.root
     }
 
@@ -46,18 +46,18 @@ class OneFragment : Fragment() {
         layoutManager = LinearLayoutManager(requireContext())
         dividerItemDecoration = DividerItemDecoration(requireContext(), layoutManager.orientation)
         adapter =
-            CustomAdapter(
-                object : CustomAdapter.OnItemClickListener {
-                    override fun itemClick(item: Item) {
-                        gotoRepositoryFragment(item)
+            RepositoryAdapter(
+                object : RepositoryAdapter.OnItemClickListener {
+                    override fun onRepositoryClick(repositoryInfo: RepositoryInfo) {
+                        gotoRepositoryFragment(repositoryInfo)
                     }
                 },
             )
 
-        safeBinding.recyclerView.apply {
-            layoutManager = this@OneFragment.layoutManager
+        safeBinding.rvRepositoryList.apply {
+            layoutManager = this@SearchFragment.layoutManager
             addItemDecoration(dividerItemDecoration)
-            adapter = this@OneFragment.adapter
+            adapter = this@SearchFragment.adapter
         }
 
         safeBinding.searchInputText.setOnEditorActionListener { editText, action, _ ->
@@ -81,8 +81,8 @@ class OneFragment : Fragment() {
         binding = null
     }
 
-    private fun gotoRepositoryFragment(item: Item) {
-        val action = OneFragmentDirections.actionRepositoriesFragmentToRepositoryFragment(item = item)
+    private fun gotoRepositoryFragment(repositoryInfo: RepositoryInfo) {
+        val action = SearchFragmentDirections.actionRepositoriesFragmentToRepositoryFragment(repositoryInfo = repositoryInfo)
         findNavController().navigate(action)
     }
 }
