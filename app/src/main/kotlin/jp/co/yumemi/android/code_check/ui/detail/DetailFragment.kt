@@ -19,6 +19,7 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
         )
 
     // リソース文字列のロード
+    private val patternWrittenLanguage by lazy { getString(R.string.pattern_written_language) }
     private val countUnitStars by lazy { getString(R.string.count_unit_stars) }
     private val countUnitWatchers by lazy { getString(R.string.count_unit_watchers) }
     private val countUnitForks by lazy { getString(R.string.count_unit_forks) }
@@ -45,7 +46,15 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
         with(safeBinding) {
             ivOwnerIcon.load(repositoryInfo.ownerAvatarUrl)
             tvRepositoryAndOwnerName.text = repositoryInfo.repositoryAndOwnerName
-            tvWrittenLanguage.text = repositoryInfo.language
+
+            // 開発言語がnullでなければ表示し、nullなら非表示にする
+            if (repositoryInfo.language != null) {
+                tvWrittenLanguage.text = String.format(patternWrittenLanguage, repositoryInfo.language)
+                tvWrittenLanguage.visibility = View.VISIBLE
+            } else {
+                tvWrittenLanguage.visibility = View.GONE
+            }
+
             tvStarCount.text = String.format(countUnitStars, repositoryInfo.stargazersCount)
             tvWatcherCount.text = String.format(countUnitWatchers, repositoryInfo.watchersCount)
             tvForkCount.text = String.format(countUnitForks, repositoryInfo.forksCount)
