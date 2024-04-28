@@ -17,6 +17,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("jp.co.yumemi.android.codecheck", appContext.packageName)
+        assertEquals("jp.co.yumemi.android.code_check", appContext.packageName)
     }
 }
