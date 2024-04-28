@@ -2,7 +2,7 @@
     <string name="app_name">Android Engineer CodeCheck</string>
 
     // レポジトリ検索ページ
-    <string name="hint_search_repository">GitHubのリポジトリを検索できるよー</string>
+    <string name="hint_search_repository">レポジトリ名かユーザー名で検索できるよ~</string>
 
     // レポジトリ詳細ページ
     <string name="count_unit_stars">stars</string>
