@@ -71,6 +71,7 @@ class SearchFragment : Fragment() {
             if (action == EditorInfo.IME_ACTION_SEARCH && editText.text.isNotEmpty()) {
                 viewModel.searchResults(editText.text.toString())
                 hideKeyboard()
+                showLoadingIndicator(true)
                 return@setOnEditorActionListener false
             }
             false
@@ -82,17 +83,26 @@ class SearchFragment : Fragment() {
         inputMethodManager.hideSoftInputFromWindow(view?.windowToken, 0)
     }
 
+    private fun showLoadingIndicator(show: Boolean) {
+        if (binding != null) {
+            binding!!.progressBar.visibility = if (show) View.VISIBLE else View.GONE
+        }
+    }
+
     private fun setupObservers() {
         // 検索結果が帰ってきたらリスト更新
         viewModel.searchResult.observe(viewLifecycleOwner) {
+            showLoadingIndicator(false)
             if (it.size == 0) {
                 Toast.makeText(requireContext(), "検索結果が0件でした。", Toast.LENGTH_LONG).show()
+            } else {
+                adapter.submitList(it)
             }
-            adapter.submitList(it)
         }
 
         // エラーだったらエラーダイアログを表示
         viewModel.errorMessage.observe(viewLifecycleOwner) {
+            showLoadingIndicator(false)
             Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
         }
     }
