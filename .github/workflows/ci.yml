@@ -1,0 +1,79 @@
+name: Android CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          java-version: 17
+          distribution: 'temurin' # AdoptOpenJDKの後継
+
+      - name: Grant execution permission for gradlew
+        run: chmod +x ./gradlew
+
+      - name: Cache Gradle dependencies
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Build Debug APK
+        run: ./gradlew assembleDebug
+
+      - name: Run Unit Tests
+        run: ./gradlew test
+        
+      # TODO: Firebase test labを使ってCIにInstrumented Testsを追加する
+      # - name: Run Instrumented Tests
+      #   run: ./gradlew connectedCheck
+
+  ktlint:
+    runs-on: ubuntu-latest
+    steps:
+      # チェックアウト
+      - uses: actions/checkout@v2
+
+      # インストール
+      - name: Install ktlint
+        run: |
+          curl -sSLO https://github.com/pinterest/ktlint/releases/download/0.42.1/ktlint
+          chmod a+x ktlint
+          sudo mv ktlint /usr/local/bin/
+
+      # 静的解析
+      - name: Lint with ktlint
+        run: ktlint --reporter=checkstyle,output=build/ktlint-report.xml
+        continue-on-error: true
+
+      # 結果の表示
+      - name: Show results on GitHub
+        uses: yutailang0119/action-ktlint@v1
+        with:
+          xml_path: build/ktlint-report.xml
+
+      # アーティファクトへアップロード
+      - name: Upload results Artifact
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: results
+          path: |
+            **/build/ktlint-report.xml
+          if-no-files-found: error
+          retention-days: 14
