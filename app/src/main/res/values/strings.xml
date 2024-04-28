@@ -5,9 +5,9 @@
     <string name="hint_search_repository">レポジトリ名かユーザー名で検索できるよ~</string>
 
     // レポジトリ詳細ページ
+    <string name="pattern_written_language">使用言語 %s</string>
     <string name="count_unit_stars">スター獲得数 %s 個</string>
     <string name="count_unit_watchers">ウォッチャー数 %s 人</string>
     <string name="count_unit_forks">フォーク数 %s 回</string>
     <string name="count_unit_open_issues">オープンなissueの数 %s 個</string>
-    <string name="pattern_writtern_language">使用言語 %s</string>
 </resources>
