@@ -1,10 +1,12 @@
 package jp.co.yumemi.android.code_check.ui.search
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -68,10 +70,16 @@ class SearchFragment : Fragment() {
             // 検索アクションかつテキストが何か入力されている時だけ、検索処理を呼び出す
             if (action == EditorInfo.IME_ACTION_SEARCH && editText.text.isNotEmpty()) {
                 viewModel.searchResults(editText.text.toString())
-                return@setOnEditorActionListener true
+                hideKeyboard()
+                return@setOnEditorActionListener false
             }
             false
         }
+    }
+
+    private fun hideKeyboard() {
+        val inputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view?.windowToken, 0)
     }
 
     private fun setupObservers() {
