@@ -11,19 +11,19 @@
         android:layout_height="0dp"
         android:layout_margin="16dp"
         android:contentDescription="@null"
-        android:src="@drawable/jetbrains"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_max="240dp" />
+        app:layout_constraintWidth_max="120dp"
+        tools:src="@drawable/jetbrains" />
 
     <TextView
         android:id="@+id/tvRepositoryAndOwnerName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:textSize="18sp"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ivOwnerIcon"
@@ -36,67 +36,68 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.5" />
 
-        <TextView
-            android:id="@+id/tvWrittenLanguage"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="8dp"
-            android:textSize="14sp"
-            app:layout_constraintTop_toBottomOf="@id/tvRepositoryAndOwnerName"
-            tools:ignore="MissingConstraints"
-            tools:text="使用言語 Kotlin" />
+    <TextView
+        android:id="@+id/tvWrittenLanguage"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@id/centerGuid"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvRepositoryAndOwnerName"
+        tools:text="使用言語 Kotlin" />
 
-        <TextView
-            android:id="@+id/tvStarCount"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="8dp"
-            android:textAlignment="textEnd"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/centerGuid"
-            app:layout_constraintTop_toBottomOf="@id/tvRepositoryAndOwnerName"
-            tools:text="スター獲得数 38530 個" />
+    <TextView
+        android:id="@+id/tvStarCount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"
+        android:textAlignment="textEnd"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/centerGuid"
+        app:layout_constraintTop_toBottomOf="@id/tvRepositoryAndOwnerName"
+        tools:text="スター獲得数\n38530 個" />
 
-        <TextView
-            android:id="@+id/tvWatcherCount"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="8dp"
-            android:textAlignment="textEnd"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/centerGuid"
-            app:layout_constraintTop_toBottomOf="@id/tvStarCount"
-            tools:text="ウォッチャー数 38530 人" />
+    <TextView
+        android:id="@+id/tvWatcherCount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"
+        android:textAlignment="textEnd"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/centerGuid"
+        app:layout_constraintTop_toBottomOf="@id/tvStarCount"
+        tools:text="ウォッチャー数\n38530 人" />
 
-        <TextView
-            android:id="@+id/tvForkCount"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="8dp"
-            android:textAlignment="textEnd"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintLeft_toLeftOf="@id/centerGuid"
-            app:layout_constraintTop_toBottomOf="@id/tvWatcherCount"
-            tools:text="フォーク数 4675 回" />
+    <TextView
+        android:id="@+id/tvForkCount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"
+        android:textAlignment="textEnd"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/centerGuid"
+        app:layout_constraintTop_toBottomOf="@id/tvWatcherCount"
+        tools:text="フォーク数\n4675 回" />
 
-        <TextView
-            android:id="@+id/tvOpenIssueCount"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="8dp"
-            android:textAlignment="textEnd"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/centerGuid"
-            app:layout_constraintTop_toBottomOf="@id/tvForkCount"
-            tools:text="オープンなissueの数 131 個" />
+    <TextView
+        android:id="@+id/tvOpenIssueCount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"
+        android:textAlignment="textEnd"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/centerGuid"
+        app:layout_constraintTop_toBottomOf="@id/tvForkCount"
+        tools:text="オープンなissueの数\n131 個" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
