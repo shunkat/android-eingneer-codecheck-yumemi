@@ -93,3 +93,6 @@ lint/tmp/
 
 # Android Profiling
 *.hprof
+
+# remove output metadata
+output-metadata.json

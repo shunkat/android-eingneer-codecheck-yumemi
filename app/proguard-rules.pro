@@ -14,8 +14,17 @@
 
 # Uncomment this to preserve the line number information for
 # debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+-keepattributes SourceFile,LineNumberTable
 
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
-#-renamesourcefileattribute SourceFile
+-renamesourcefileattribute SourceFile
+
+# Keep the RepositoryInfo class and all its members to prevent it from being stripped out.
+-keep class jp.co.yumemi.android.code_check.data.model.RepositoryInfo { *; }
+
+# Keep all navigation component related classes and all their members.
+-keep class androidx.navigation.** { *; }
+
+# Keep all classes that extend Fragment and all their members to ensure proper functioning of navigation.
+-keep class * extends androidx.fragment.app.Fragment { *; }
