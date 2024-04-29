@@ -2,9 +2,11 @@
     <string name="app_name">ゆめみコーディング試験</string>
 
     // レポジトリ検索ページ
+    <string name="title_search_page">レポジトリ検索</string>
     <string name="hint_search_repository">レポジトリ名かユーザー名で検索できるよ~</string>
 
     // レポジトリ詳細ページ
+    <string name="title_detail_page">レポジトリ詳細</string>
     <string name="pattern_written_language">使用言語\n%s</string>
     <string name="count_unit_stars">スター獲得数\n%s 個</string>
     <string name="count_unit_watchers">ウォッチャー数\n%s 人</string>
