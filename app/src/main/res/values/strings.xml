@@ -3,6 +3,8 @@
 
     // レポジトリ検索ページ
     <string name="hint_search_repository">レポジトリ名かユーザー名で検索できるよ~</string>
+    <string name="label_next_page_button">次のページ</string>
+    <string name="label_previous_page_button">前のページ</string>
 
     // レポジトリ詳細ページ
     <string name="pattern_written_language">使用言語\n%s</string>
