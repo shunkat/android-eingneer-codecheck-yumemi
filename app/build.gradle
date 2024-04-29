@@ -21,6 +21,21 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    // Flavor dimensionsの追加
+    flavorDimensions "version"
+
+    // product flavorの設定
+    productFlavors {
+        dev {
+            dimension "version"
+            applicationIdSuffix ".dev"
+            versionNameSuffix "-dev"
+        }
+        prod {
+            dimension "version"
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled true
