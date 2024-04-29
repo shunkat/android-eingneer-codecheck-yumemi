@@ -47,7 +47,6 @@ class SearchFragment : Fragment() {
         }
     }
 
-    // viewの初期化
     private fun initViews(binding: FragmentSearchBinding) {
         layoutManager = LinearLayoutManager(requireContext())
         dividerItemDecoration = DividerItemDecoration(requireContext(), layoutManager.orientation)
@@ -66,44 +65,47 @@ class SearchFragment : Fragment() {
             adapter = this@SearchFragment.adapter
         }
 
-        binding.searchInputText.setOnEditorActionListener { editText, action, _ ->
-            // 検索アクションかつテキストが何か入力されている時だけ、検索処理を呼び出す
-            if (action == EditorInfo.IME_ACTION_SEARCH && editText.text.isNotEmpty()) {
+        binding.searchInputText.setOnEditorActionListener { editText, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH && editText.text.isNotEmpty()) {
                 viewModel.searchResults(editText.text.toString())
                 hideKeyboard()
                 showLoadingIndicator(true)
-                return@setOnEditorActionListener false
+                return@setOnEditorActionListener true
             }
             false
+        }
+
+        binding.nextPageButton.setOnClickListener {
+            viewModel.loadNextPage()
+        }
+
+        binding.prevPageButton.setOnClickListener {
+            viewModel.loadPreviousPage()
         }
     }
 
     private fun hideKeyboard() {
-        val inputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(view?.windowToken, 0)
+        val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view?.windowToken, 0)
     }
 
     private fun showLoadingIndicator(show: Boolean) {
-        if (binding != null) {
-            binding!!.progressBar.visibility = if (show) View.VISIBLE else View.GONE
-        }
+        binding?.progressBar?.visibility = if (show) View.VISIBLE else View.GONE
     }
 
     private fun setupObservers() {
-        // 検索結果が帰ってきたらリスト更新
-        viewModel.searchResult.observe(viewLifecycleOwner) {
+        viewModel.searchResult.observe(viewLifecycleOwner) { results ->
             showLoadingIndicator(false)
-            if (it.size == 0) {
+            if (results.isEmpty()) {
                 Toast.makeText(requireContext(), "検索結果が0件でした。", Toast.LENGTH_LONG).show()
             } else {
-                adapter.submitList(it)
+                adapter.submitList(results)
             }
         }
 
-        // エラーだったらエラーダイアログを表示
-        viewModel.errorMessage.observe(viewLifecycleOwner) {
+        viewModel.errorMessage.observe(viewLifecycleOwner) { message ->
             showLoadingIndicator(false)
-            Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
         }
     }
 
@@ -113,7 +115,8 @@ class SearchFragment : Fragment() {
     }
 
     private fun gotoRepositoryFragment(repositoryInfo: RepositoryInfo) {
-        val action = SearchFragmentDirections.actionRepositoriesFragmentToRepositoryFragment(repositoryInfo = repositoryInfo)
+        // 遷移処理の名前がおかしいことに気づいてしまった
+        val action = SearchFragmentDirections.actionRepositoriesFragmentToRepositoryFragment(repositoryInfo)
         findNavController().navigate(action)
     }
 }
