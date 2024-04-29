@@ -113,7 +113,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun gotoRepositoryFragment(repositoryInfo: RepositoryInfo) {
-        val action = SearchFragmentDirections.actionRepositoriesFragmentToRepositoryFragment(repositoryInfo = repositoryInfo)
+        val action = SearchFragmentDirections.actionToDetailFragmentFromSearchFragment(repositoryInfo = repositoryInfo)
         findNavController().navigate(action)
     }
 }
